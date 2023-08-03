@@ -24,10 +24,7 @@ public class BackgroundJob
             {
                 var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
                 var logger = loggerFactory.CreateLogger("Showcase Logger Test");
-                using (logger.BeginScope("Showcase scope"))
-                {
-                    logger.LogError(exception, "Error while processing background job");
-                }
+                logger.LogError(exception, "Error while processing background job");
             }
         }
 
