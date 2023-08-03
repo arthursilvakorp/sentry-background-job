@@ -1,19 +1,9 @@
 using Hangfire;
 using Hangfire.Storage.SQLite;
-using Sentry;
 using Sentry.Extensibility;
 using SentryBackgroundJobShowcase;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
-
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
-    .CreateLogger();
 
 builder.WebHost.UseSentry();
 
@@ -24,7 +14,6 @@ builder.Services
         .UseSimpleAssemblyNameTypeSerializer()
         .UseRecommendedSerializerSettings()
         .UseSQLiteStorage(builder.Configuration.GetConnectionString("DefaultConnection")))
-    .AddAuthorization()
     .AddHostedService<AddBackgroundJobHostedService>()
     .AddTransient<ISentryEventProcessor, MyEventProcessor>();
 
@@ -36,11 +25,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthorization();
 
 app.Run();

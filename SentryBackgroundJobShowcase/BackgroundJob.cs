@@ -23,7 +23,7 @@ public class BackgroundJob
             using (var scope = _serviceProvider.CreateScope())
             {
                 var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
-                var logger = loggerFactory.CreateLogger("Showcase Logger Test");
+                var logger = loggerFactory.CreateLogger<BackgroundJob>();
                 logger.LogError(exception, "Error while processing background job");
             }
         }
